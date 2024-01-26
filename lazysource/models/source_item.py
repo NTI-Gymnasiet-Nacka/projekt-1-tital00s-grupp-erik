@@ -1,9 +1,15 @@
+from datetime import date
+from datetime import datetime
+
 from sqlalchemy import ForeignKey
 from sqlalchemy import String
+from sqlalchemy import Date
+from sqlalchemy import DateTime
+from sqlalchemy import Column
+from sqlalchemy.sql import func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import relationship
 
 class Base(DeclarativeBase):
     pass
@@ -21,9 +27,13 @@ class SourceItem(Base):
     page_nums: Mapped[str] = mapped_column(String(9999))
     edition: Mapped[str] = mapped_column(String(9999))
     url: Mapped[str] = mapped_column(String(9999))
-    access_date: Mapped[str] = mapped_column(String(10))
-    #created at
-    #updated at
+    access_date: Mapped[date] = mapped_column(Date())
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), onupdate=func.now()
+    )
     
     
     
