@@ -1,8 +1,11 @@
+from typing import Dict, List
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from lazysource.models.source_item import Base, SourceItem
 
+class ItemNotFoundError(Exception):
+    pass
 
 class DatabaseManager:
     def __init__(self, db_url="sqlite:///test.db") -> None:
@@ -15,18 +18,24 @@ class DatabaseManager:
 
     def get_source(self, source_item_id):
         with self.get_session() as session:
-            return session.query(SourceItem).filter(SourceItem.id_ == source_item_id).one_or_none()
+            item = session.query(SourceItem).filter(SourceItem.id_ == source_item_id).one_or_none()
+            if item is None:
+                raise ItemNotFoundError(f"Item_source with id: {source_item_id} not found")
+            return item
 
-    def add_source(self, item:SourceItem):
+    def add_source(self, item_dict:Dict):
         with self.get_session() as session:
             try:
+
+                item = SourceItem()
+                item.from_dict(**item_dict)
                 session.add(item)
                 session.commit()
             except SQLAlchemyError as e:
                 session.rollback()
                 raise e
 
-    def update_source(self, item_id:SourceItem.id_):
+    def update_source(self, item_id: int):
         with self.get_session() as session:
             try:
                 item = self.get_source(item_id)
@@ -37,10 +46,10 @@ class DatabaseManager:
                 session.rollback()
                 raise e
 
-    def delete_source(self, item_id:SourceItem.id_):
+    def delete_source(self, source_item_id: int):
         with self.get_session() as session:
             try:
-                item = self.get_source(item_id)
+                item = self.get_source(source_item_id)
                 if item:
                     session.delete(item)
                     session.commit()
@@ -48,10 +57,10 @@ class DatabaseManager:
                 session.rollback()
                 raise e
 
-    def get_all_sources(self):
+    def get_all_sources(self) -> List[Dict]:
         with self.get_session() as session:
             sources = session.query(SourceItem).all()
-            return sources
+            return [source.to_dict() for source in sources]
 
 if __name__ == "__main__":
-    print("Do your testing here?")
+    pass
