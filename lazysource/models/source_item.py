@@ -1,5 +1,6 @@
 from datetime import date
 from datetime import datetime
+from typing import List
 
 from sqlalchemy import String
 from sqlalchemy import Date
@@ -54,3 +55,28 @@ class SourceItem(Base):
                        "access_date": self.access_date
                        }
         return source_data
+
+def authors_to_list(authors:str) -> List[str]:
+    # ALL Authors shall be added with trailing semicolon
+    return authors.split(sep=";")
+    
+    
+class SourceData:
+    def __init__(self, **kwargs) -> None:
+        self.catagory = kwargs.get("category")
+        self.title = kwargs.get("title")
+        self.d_o_p = kwargs.get("d_o_p")
+        self.authors: List[str] = authors_to_list(kwargs.get("authors"))
+        self.publisher: str = kwargs.get("publisher")
+        self.page_nums = kwargs.get("page_nums")
+        self.edition = kwargs.get("edition")
+        self.url = kwargs.get("url")
+        self._access_date: date = kwargs.get("access_date")
+    
+    @property
+    def access_date(self):
+        return self._access_date.strftime('%Y-%m-%d')
+
+    @access_date.setter
+    def access_date(self, access_date):
+        self._access_date = datetime.strptime(access_date, '%Y-%m-%d').date()
