@@ -3,8 +3,15 @@ from newspaper import Article
 from newspaper.utils import BeautifulSoup
 
 class Newsarticle():
+    """
+    params:
+        title: the headline/title  str|Any
+        authors: the author/authors seprated with ;  str
+        d_o_p: date of publication YYYY-MM-DD  str|None
+        publisher: new of newspaper/publisher  str|None
+    """
     
-    def __init__(self, base_url) -> None:
+    def __init__(self, base_url: str) -> None:
         
         self.base_url = base_url
         self._raw_html = requests.get(base_url)
@@ -46,3 +53,5 @@ class Newsarticle():
                 self.publisher = None
             if self.publisher is None:
                 self.publisher = article.meta_data.get("application-name")
+
+Newsarticle()
