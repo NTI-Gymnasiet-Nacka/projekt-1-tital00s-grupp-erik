@@ -53,5 +53,3 @@ class Newsarticle():
                 self.publisher = None
             if self.publisher is None:
                 self.publisher = article.meta_data.get("application-name")
-
-Newsarticle()
