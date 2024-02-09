@@ -20,7 +20,7 @@ class SourceItem(Base):
     id_: Mapped[str] = mapped_column(primary_key=True)
     catagory: Mapped[str] = mapped_column(String(30))
     title: Mapped[str] = mapped_column(String(9999))
-    d_o_p: Mapped[date] = mapped_column(Date()) #date of pulication
+    d_o_p: Mapped[str] = mapped_column(String(10)) #date of pulication
     authors: Mapped[str] = mapped_column(String(9999)) 
     publisher: Mapped[str] = mapped_column(String(9999))
     page_nums: Mapped[str] = mapped_column(String(9999))
