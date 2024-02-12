@@ -38,7 +38,8 @@ elif platform == 'linux':
 
     def copy_to_clipboard(html_content:str):
         try:
-            subprocess.run('xclip -selection clipboard -t text/html', input=html_content, text=True, shell=True, check=True)
+            subprocess.run(['xclip', '-selection', 'clipboard', '-t', 'text/html'], input=html_content, text=True, check=True)
+            return "Copied to clipboard"
         except subprocess.CalledProcessError:
             # Fallback or error handling
-            print("Error: Could not copy to the clipboard. Ensure xclip is installed.")
+            raise RuntimeError("Could not copy to the clipboard. Ensure xclip is installed.")
