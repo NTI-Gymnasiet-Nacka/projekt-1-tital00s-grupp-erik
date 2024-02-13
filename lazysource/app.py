@@ -5,6 +5,7 @@ from rich.console import Console
 
 from lazysource.database.db_manager import DatabaseManager
 from lazysource.utils.copier import copy_to_clipboard
+from lazysource.models.source_item import SourceData
 
 class App:
     def __init__(self):
@@ -28,12 +29,15 @@ class App:
 
                 # Test reference
                 html_reference = "<p><i>Author Last Name, Author First Initial.</i> (Year Published). <i>Title of Document</i>. Retrieved from http://URL</p>"
+                
                 try: 
                     sources = self.db_manager.get_all_sources()
-                    # run with to html source  func here
+                    # run with source to html func here
                     export_strings = [source for source in sources] 
+                    self.console.print(export_strings) # Test
+
                     # test
-                    export_strings = [html_reference]*5 
+                    export_strings = [html_reference]*5
 
                     for string in export_strings:
                         print_formatted_text(HTML(string))
@@ -44,13 +48,14 @@ class App:
                     choice = prompt(">> ", completer=completer)
 
                     if choice == options[0]:
-                        # TODO: sort export strings by first char in A-Z 
+                        # sorts export strings by first char in A-Z 
                         # Concate that list of strings into singular string
                         # Copy to clipboard 
 
-                        export_string = ''.join(export_strings)
+                        export_strings.sort() # By first char from A-Z
+                        export_string = ''.join(export_strings) # Build a singular list
                         res = copy_to_clipboard(export_string)
-                        self.console.print(f'[green]{res}')
+                        self.console.print(f'[bold green]{res}[/bold green]')
                         # self.main_screen() # Switch to main screen
 
                     elif choice == options[1]:
@@ -78,6 +83,47 @@ class App:
 
 if __name__ == "__main__":
     app = App()
+    source_data_examples = [
+            {
+                "category": "Book",
+                "title": "The Pragmatic Programmer: Your Journey To Mastery",
+                "d_o_p": "1999-10-30",
+                "authors": "Andrew Hunt;David Thomas;",
+                "publisher": "Addison-Wesley Professional",
+                "page_nums": "320",
+                "edition": "1st",
+                "url": "https://example.com/pragmaticprogrammer",
+                "access_date": "2024-02-10",
+                },
+            {
+                "category": "Journal Article",
+                "title": "Deep Learning for Generic Object Detection: A Survey",
+                "d_o_p": "2019-01-15",
+                "authors": "Li Liu;Wanli Ouyang;Xiaogang Wang;Paul Fieguth;Jie Chen;Xinwang Liu;Matt Pietikäinen;",
+                "publisher": "International Journal of Computer Vision",
+                "page_nums": "45-67",
+                "edition": "",
+                "url": "https://example.com/deeplearningobjectsurvey",
+                "access_date": "2024-02-12",
+                },
+            {
+                "category": "Conference Paper",
+                "title": "Attention is All You Need",
+                "d_o_p": "2017-06-12",
+                "authors": "Ashish Vaswani;Noam Shazeer;Niki Parmar;Jakob Uszkoreit;Llion Jones;Aidan N. Gomez;Łukasz Kaiser;Illia Polosukhin;",
+                "publisher": "NIPS",
+                "page_nums": "5998-6008",
+                "edition": "",
+                "url": "https://example.com/attentionneedy",
+                "access_date": "2024-02-11",
+                }
+            ]
+
+    source_data_objects = [SourceData(**data) for data in source_data_examples]
+
+    for source in source_data_objects:
+        # app.db_manager.add_source(source.to_dict())
+        pass
     app.export_source_screen()
 
 
