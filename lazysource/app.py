@@ -13,6 +13,20 @@ class App:
 
         self.console = Console()
 
+    def import_source_screen(self):
+        # Ask for url, ask for category
+        self.console.print("Add Source screen")
+        CATEGORIES = {"Book": "Books with one or serveral authors, edition supported", 
+                      "Article": "News websites, like BBC CNN etc, supports publisher",
+                      "Misc": "For anyother source"}
+
+        options = CATEGORIES.keys()
+        self.console.print("Avialble catgeory: Message")
+        self.console.print(CATEGORIES)
+        completer = WordCompleter(list(options))
+        choice = prompt(">>", completer=completer)
+        
+        
     def export_source_screen(self):
         # Ask which sources to export?
         self.console.print("[cyan]Export Source Screeen") 
@@ -124,6 +138,6 @@ if __name__ == "__main__":
     for source in source_data_objects:
         # app.db_manager.add_source(source.to_dict())
         pass
-    app.export_source_screen()
+    app.import_source_screen()
 
 
