@@ -2,6 +2,7 @@ from prompt_toolkit import prompt
 from prompt_toolkit import print_formatted_text, HTML
 from prompt_toolkit.completion import WordCompleter
 from rich.console import Console
+from rich.table import Table
 
 from lazysource.database.db_manager import DatabaseManager
 from lazysource.utils.copier import copy_to_clipboard
@@ -10,8 +11,36 @@ from lazysource.models.source_item import SourceData
 class App:
     def __init__(self):
         self.db_manager = DatabaseManager()
-
         self.console = Console()
+        
+    def main_window(self):
+        self.console.print("[cyan]Main window")
+        options = ["View all sources", "Import source", "Export source"]
+        completer = WordCompleter(options)
+        formatted_options = '/'.join(f"[yellow]{option}[/yellow]" for option in options)
+        self.console.print(f'Options: {formatted_options}')
+        choice = prompt(">> ", completer=completer)
+        
+        try:
+            if choice == options[0]:
+                self.view_all_sources()
+            elif choice == options[1]:
+                self.export_source_screen()
+            elif choice == options[2]:
+                self.export_source_screen()
+            else:
+                raise ValueError("Invalid command")
+            
+        except ValueError as e:
+            self.console.print(f'[red]{e}')
+            self.run()
+            
+        
+    def view_all_sources(self):
+        pass
+    
+    def import_source_screen(self):
+        pass
 
     def export_source_screen(self):
         # Ask which sources to export?
@@ -55,6 +84,7 @@ class App:
                         export_strings.sort() # By first char from A-Z
                         export_string = ''.join(export_strings) # Build a singular list
                         res = copy_to_clipboard(export_string)
+                        #res = ""
                         self.console.print(f'[bold green]{res}[/bold green]')
                         # self.main_screen() # Switch to main screen
 
@@ -79,6 +109,10 @@ class App:
         except ValueError as e:
             self.console.print(f'[red]{e}')
             self.export_source_screen()
+            
+            
+    def run(self):
+        self.main_window()
 
 
 if __name__ == "__main__":
@@ -124,6 +158,6 @@ if __name__ == "__main__":
     for source in source_data_objects:
         # app.db_manager.add_source(source.to_dict())
         pass
-    app.export_source_screen()
+    app.run()
 
 
