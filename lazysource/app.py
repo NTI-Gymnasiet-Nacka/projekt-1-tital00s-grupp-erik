@@ -17,15 +17,48 @@ class App:
         # Ask for url, ask for category
         self.console.print("Add Source screen")
         CATEGORIES = {"Book": "Books with one or serveral authors, edition supported", 
-                      "Article": "News websites, like BBC CNN etc, supports publisher",
-                      "Misc": "For anyother source"}
+                      "Newspaper article": "News websites, like BBC CNN etc, supports publisher",
+                      "Misc": "For not defined category source"}
 
-        options = CATEGORIES.keys()
+        options = list(CATEGORIES.keys())
         self.console.print("Avialble catgeory: Message")
         self.console.print(CATEGORIES)
-        completer = WordCompleter(list(options))
-        choice = prompt(">>", completer=completer)
-        
+        completer = WordCompleter(options)
+        choice = prompt(">> ", completer=completer)
+        try:
+            if choice == options[0]:
+                category = "book"
+
+            elif choice == options[1]:
+                category = "newspaper_article"
+
+            elif choice == options[-1]:
+                category = "misc"
+
+            else:
+                raise ValueError("Invalid category. Try again.")
+        except ValueError as e:
+            self.console.print(f"[red]{e}")
+            self.import_source_screen()
+
+        else:
+            # Valid category
+            # Ask for URL
+            source_data = {
+                "category": category,
+                "title":  None,
+                "d_o_p": None,
+                "authors": None,
+                "publisher": None,
+                "page_nums": None,
+                "edition": None,
+                "url": None,
+                "access_date": None,
+                },
+
+            pass
+
+
         
     def export_source_screen(self):
         # Ask which sources to export?
