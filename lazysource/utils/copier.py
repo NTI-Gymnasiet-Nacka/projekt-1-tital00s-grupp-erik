@@ -10,28 +10,40 @@ else:
 
 if platform == 'windows':
     import win32clipboard as clipboard
-    import win32con
 
-    def copy_to_clipboard(html_content:str):
-        # Open the clipboard
-        clipboard.OpenClipboard()
+    def copy_to_clipboard(html_content: str):
+        try: 
+            # Register the HTML format with Windows
+            cf_html = clipboard.RegisterClipboardFormat("HTML Format")
 
-        # Empty the clipboard
-        clipboard.EmptyClipboard()
+            # Construct the HTML clipboard content
+            header = """
+                Version:0.9
+                StartHTML:00000097
+                EndHTML:{1:09d}
+                StartFragment:00000133
+                EndFragment:{0:09d}
+                <html><body><!--StartFragment-->{2}<!--EndFragment--></body></html>
+                """
+            html = header.format(len(header) + len(html_content) + 1, len(header), html_content)
 
-        # Set the clipboard data as HTML format
-        # Windows requires a specific format for HTML to be recognized by applications.
-        # This includes a header with version, start HTML, end HTML, start fragment, and end fragment positions.
-        header = "Version:0.9\r\nStartHTML:00000097\r\nEndHTML:{1:09d}\r\nStartFragment:00000133\r\nEndFragment:{0:09d}\r\n"
-        markup = "<html><body><!--StartFragment-->{0}<!--EndFragment--></body></html>".format(html_content)
-        payload = header + markup
-        payload = payload.format(len(payload) + 1, len(header))
+            # Open the clipboard
+            clipboard.OpenClipboard()
+
+            # Empty the clipboard
+            clipboard.EmptyClipboard()
+
+            # Set clipboard data for the registered HTML format
+            clipboard.SetClipboardData(cf_html, html.encode("UTF-8"))
+        except Exception as e:
+            raise ValueError("Could not set clipboard data {e}")
         
-        # Set clipboard data
-        clipboard.SetClipboardData(win32con.CF_HTML, payload.encode("UTF-8"))
+        else:
+            return "Copied to clipboard"
 
-        # Close the clipboard
-        clipboard.CloseClipboard()
+        finally:
+            # Close the clipboard
+            clipboard.CloseClipboard()
         
 elif platform == 'linux':
     import subprocess
