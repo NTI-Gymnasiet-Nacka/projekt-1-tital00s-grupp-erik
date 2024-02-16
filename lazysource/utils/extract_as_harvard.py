@@ -100,8 +100,8 @@ def harvard_format_article(d:dict) -> str:
     else:
         access_date = d.get("access_date")
     
-    y_o_p = d_o_p.split("-")[-1]
-    d_m = d_o_p.split("-")[0] + "-" + d_o_p.split("-")[1]
+    y_o_p = d_o_p.split("-")[0]
+    d_m = d_o_p.split("-")[-1] + "-" + d_o_p.split("-")[1]
     
     return f"{authors} ({y_o_p}). {title}. {publsiher}. {d_m}. {url} ({access_date})."
     
@@ -125,7 +125,7 @@ if __name__ == "__main__":
     source_data = { 
     "category": "article",
     "title":  "500 skämt om papperssortering",
-    "d_o_p":  "12-12-2012",
+    "d_o_p":  "2012-11-15",
     "authors": ["Vidar Silas Mörk", "Eddie Ekbacke", "William Carl Svensson"],
     "publisher":  "Bonnier",
     "page_nums":  "21-22",
