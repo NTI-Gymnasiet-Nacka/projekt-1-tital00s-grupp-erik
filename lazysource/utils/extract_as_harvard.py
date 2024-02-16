@@ -64,7 +64,7 @@ def harvard_format_book(d: dict) -> str:
     
     if d.get("page_nums") != None:
         page_nums = d.get("page_nums")
-        return f"<p>{authors} ({y_o_p}). <i>{title}</i>. {edition}. edition. {publsiher}, {page_nums}.</p"
+        return f"<p>{authors} ({y_o_p}). <i>{title}</i>. {edition}. edition. {publsiher}, {page_nums}.</p>"
     else:
         return f"<p>{authors} ({y_o_p}). <i>{title}</i>. {edition}. edition. {publsiher}.</p>"
     
