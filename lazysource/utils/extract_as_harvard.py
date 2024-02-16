@@ -64,9 +64,9 @@ def harvard_format_book(d: dict) -> str:
     
     if d.get("page_nums") != None:
         page_nums = d.get("page_nums")
-        return f"{authors} ({y_o_p}). {title}. {edition}. edition. {publsiher}, {page_nums}."
+        return f"<p>{authors} ({y_o_p}). <i>{title}</i>. {edition}. edition. {publsiher}, {page_nums}.</p>"
     else:
-        return f"{authors} ({y_o_p}). {title}. {edition}. edition. {publsiher}."
+        return f"<p>{authors} ({y_o_p}). <i>{title}</i>. {edition}. edition. {publsiher}.</p>"
     
 
 def harvard_format_article(d:dict) -> str:
@@ -100,10 +100,10 @@ def harvard_format_article(d:dict) -> str:
     else:
         access_date = d.get("access_date")
     
-    y_o_p = d_o_p.split("-")[-1]
-    d_m = d_o_p.split("-")[0] + "-" + d_o_p.split("-")[1]
+    y_o_p = d_o_p.split("-")[0]
+    d_m = d_o_p.split("-")[-1] + "-" + d_o_p.split("-")[1]
     
-    return f"{authors} ({y_o_p}). {title}. {publsiher}. {d_m}. {url} ({access_date})."
+    return f"<p>{authors} ({y_o_p}). {title}. <i>{publsiher}</i>. {d_m}. {url} (Accessed {access_date}).</p>"
     
   
 def build_export_string(source_data:dict) -> str:
@@ -125,7 +125,7 @@ if __name__ == "__main__":
     source_data = { 
     "category": "article",
     "title":  "500 skämt om papperssortering",
-    "d_o_p":  "12-12-2012",
+    "d_o_p":  "2012-11-15",
     "authors": ["Vidar Silas Mörk", "Eddie Ekbacke", "William Carl Svensson"],
     "publisher":  "Bonnier",
     "page_nums":  "21-22",
