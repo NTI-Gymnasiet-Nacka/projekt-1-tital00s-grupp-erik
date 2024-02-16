@@ -7,6 +7,7 @@ from rich.table import Table
 from lazysource.database.db_manager import DatabaseManager
 from lazysource.utils.copier import copy_to_clipboard
 from lazysource.models.source_item import SourceData
+from lazysource.utils.extract_as_harvard import build_export_string
 
 class App:
     def __init__(self):
@@ -57,19 +58,22 @@ class App:
                 # export source utility func
 
                 # Test reference
-                html_reference = "<p><i>Author Last Name, Author First Initial.</i> (Year Published). <i>Title of Document</i>. Retrieved from http://URL</p>"
+                # html_reference = "<p><i>Author Last Name, Author First Initial.</i> (Year Published). <i>Title of Document</i>. Retrieved from http://URL</p>"
                 
                 try: 
                     sources = self.db_manager.get_all_sources()
                     # run with source to html func here
-                    export_strings = [source for source in sources] 
-                    self.console.print(export_strings) # Test
+                    
+
+                    export_strings = [build_export_string(source.export_dict()) for source in sources] 
+                    # self.console.print(export_strings) # Test
 
                     # test
-                    export_strings = [html_reference]*5
+                    # export_strings = [html_reference]*5
 
                     for string in export_strings:
-                        print_formatted_text(HTML(string))
+                        # print_formatted_text(HTML(string))
+                        print(string)
 
                     self.console.print("Looks good?") 
                     options = ["Yes", "No"]
@@ -119,7 +123,7 @@ if __name__ == "__main__":
     app = App()
     source_data_examples = [
             {
-                "category": "Book",
+                "category": "book",
                 "title": "The Pragmatic Programmer: Your Journey To Mastery",
                 "d_o_p": "1999-10-30",
                 "authors": "Andrew Hunt;David Thomas;",
@@ -130,7 +134,7 @@ if __name__ == "__main__":
                 "access_date": "2024-02-10",
                 },
             {
-                "category": "Journal Article",
+                "category": "book",
                 "title": "Deep Learning for Generic Object Detection: A Survey",
                 "d_o_p": "2019-01-15",
                 "authors": "Li Liu;Wanli Ouyang;Xiaogang Wang;Paul Fieguth;Jie Chen;Xinwang Liu;Matt Pietikäinen;",
@@ -141,7 +145,7 @@ if __name__ == "__main__":
                 "access_date": "2024-02-12",
                 },
             {
-                "category": "Conference Paper",
+                "category": "article",
                 "title": "Attention is All You Need",
                 "d_o_p": "2017-06-12",
                 "authors": "Ashish Vaswani;Noam Shazeer;Niki Parmar;Jakob Uszkoreit;Llion Jones;Aidan N. Gomez;Łukasz Kaiser;Illia Polosukhin;",
@@ -155,6 +159,7 @@ if __name__ == "__main__":
 
     source_data_objects = [SourceData(**data) for data in source_data_examples]
 
+    # app.db_manager.add_source(source_data_objects[-1].to_dict())
     for source in source_data_objects:
         # app.db_manager.add_source(source.to_dict())
         pass
