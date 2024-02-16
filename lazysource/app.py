@@ -7,6 +7,7 @@ from lazysource.database.db_manager import DatabaseManager
 from lazysource.utils.copier import copy_to_clipboard
 from lazysource.models.source_item import SourceData
 from lazysource.utils.extract_as_harvard import build_export_string
+from lazysource.utils.utils import escape_html
 
 class App:
     def __init__(self):
@@ -43,8 +44,7 @@ class App:
                     # export_strings = [html_reference]*5
 
                     for string in export_strings:
-                        # print_formatted_text(HTML(string))
-                        print(string)
+                        print_formatted_text(HTML(escape_html(string)))
 
                     self.console.print("Looks good?") 
                     options = ["Yes", "No"]
@@ -90,36 +90,36 @@ if __name__ == "__main__":
     source_data_examples = [
             {
                 "category": "book",
-                "title": "The Pragmatic Programmer: Your Journey To Mastery",
-                "d_o_p": "1999-10-30",
-                "authors": "Andrew Hunt;David Thomas;",
-                "publisher": "Addison-Wesley Professional",
-                "page_nums": "320",
-                "edition": "1st",
-                "url": "https://example.com/pragmaticprogrammer",
-                "access_date": "2024-02-10",
-                },
-            {
-                "category": "book",
-                "title": "Deep Learning for Generic Object Detection: A Survey",
-                "d_o_p": "2019-01-15",
-                "authors": "Li Liu;Wanli Ouyang;Xiaogang Wang;Paul Fieguth;Jie Chen;Xinwang Liu;Matt Pietikäinen;",
-                "publisher": "International Journal of Computer Vision",
-                "page_nums": "45-67",
-                "edition": "",
-                "url": "https://example.com/deeplearningobjectsurvey",
-                "access_date": "2024-02-12",
+                "title":  "500 skämt om papperssortering",
+                "d_o_p":  "2012-11-15",
+                "authors": "Vidar Silas Aörk;Eddie Ekbacke;William Carl Svensson",
+                "publisher":  "Bonnier",
+                "page_nums":  "21-22",
+                "edition": "5",
+                "url": "www.youtube.com/video",
+                "access_date": "2012-11-21"
                 },
             {
                 "category": "article",
-                "title": "Attention is All You Need",
-                "d_o_p": "2017-06-12",
-                "authors": "Ashish Vaswani;Noam Shazeer;Niki Parmar;Jakob Uszkoreit;Llion Jones;Aidan N. Gomez;Łukasz Kaiser;Illia Polosukhin;",
-                "publisher": "NIPS",
-                "page_nums": "5998-6008",
-                "edition": "",
-                "url": "https://example.com/attentionneedy",
-                "access_date": "2024-02-11",
+                "title":  "500 skämt om papperssortering",
+                "d_o_p":  "2012-11-15",
+                "authors": "Vidar Silas Börk;Eddie Ekbacke;William Carl Svensson",
+                "publisher":  "Bonnier",
+                "page_nums":  "21-22",
+                "edition": "5",
+                "url": "www.youtube.com/video",
+                "access_date": "2012-11-21"
+                },
+            {
+                "category": "article",
+                "title":  "500 skämt om papperssortering",
+                "d_o_p":  "2012-11-15",
+                "authors": "Vidar Silas Cörk;Eddie Ekbacke;William Carl Svensson",
+                "publisher":  "Bonnier",
+                "page_nums":  "21-22",
+                "edition": "5",
+                "url": "www.youtube.com/video",
+                "access_date": "2012-11-21"
                 }
             ]
 
@@ -127,7 +127,7 @@ if __name__ == "__main__":
 
     # app.db_manager.add_source(source_data_objects[-1].to_dict())
     for source in source_data_objects:
-        # app.db_manager.add_source(source.to_dict())
+        app.db_manager.add_source(source)
         pass
     app.export_source_screen()
 
