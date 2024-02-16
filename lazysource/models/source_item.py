@@ -82,7 +82,8 @@ class SourceData:
 
         if self._access_date and isinstance(self._access_date, str):
             self.access_date = self._access_date
-    
+
+    @property 
     def authors(self) -> List[str]:
         return authors_to_list(self._authors)
 
@@ -124,5 +125,19 @@ class SourceData:
                        "edition": self.edition,
                        "url": self.url,
                        "access_date": self._access_date
+                       }
+        return source_data
+
+    def export_dict(self):
+        source_data = { 
+                       "category": self.category,
+                       "title":  self.title,
+                       "d_o_p":  self.d_o_p,
+                       "authors": self.authors,
+                       "publisher":  self.publisher,
+                       "page_nums":  self.page_nums,
+                       "edition": self.edition,
+                       "url": self.url,
+                       "access_date": self.access_date
                        }
         return source_data

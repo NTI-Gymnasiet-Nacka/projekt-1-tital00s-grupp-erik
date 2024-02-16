@@ -2,7 +2,7 @@ from typing import Dict, List
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
-from lazysource.models.source_item import Base, SourceItem
+from lazysource.models.source_item import Base, SourceData, SourceItem
 
 class ItemNotFoundError(Exception):
     pass
@@ -57,10 +57,10 @@ class DatabaseManager:
                 session.rollback()
                 raise e
 
-    def get_all_sources(self) -> List[Dict]:
+    def get_all_sources(self) -> List[SourceData]:
         with self.get_session() as session:
             sources = session.query(SourceItem).all()
-            return [source.to_dict() for source in sources]
+            return [SourceData(**source.to_dict()) for source in sources]
 
 if __name__ == "__main__":
     pass
