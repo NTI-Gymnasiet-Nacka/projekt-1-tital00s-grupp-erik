@@ -66,7 +66,7 @@ def harvard_format_book(d: dict) -> str:
         page_nums = d.get("page_nums")
         return f"{authors} ({y_o_p}). {title}. {edition}. edition. {publsiher}, {page_nums}."
     else:
-        return f"{authors} ({y_o_p}). {title}. {edition}. edition. {publsiher}."
+        return f"<p>{authors} ({y_o_p}). <i>{title}</i>. {edition}. edition. {publsiher}.</p>"
     
 
 def harvard_format_article(d:dict) -> str:
@@ -103,7 +103,7 @@ def harvard_format_article(d:dict) -> str:
     y_o_p = d_o_p.split("-")[0]
     d_m = d_o_p.split("-")[-1] + "-" + d_o_p.split("-")[1]
     
-    return f"{authors} ({y_o_p}). {title}. {publsiher}. {d_m}. {url} ({access_date})."
+    return f"<p>{authors} ({y_o_p}). {title}. <i>{publsiher}</i>. {d_m}. {url} (Accessed {access_date}).</p>"
     
   
 def build_export_string(source_data:dict) -> str:
