@@ -39,7 +39,18 @@ class App:
             
         
     def view_all_sources(self):
-        pass
+        sources = self.db_manager.get_all_sources() # List[SourceData]
+        table = Table()
+        table.add_column("ID")
+        table.add_column("Title")
+        table.add_column("Authors")
+        for source in sources:
+            table.add_row(str(source.id), source.title, source._authors)
+        # fetch all sources
+        # loopa source for sources
+        # row add source.id source.authors, source.title
+        self.console.print(table)
+        self.main_window()
     
     def import_source_screen(self):
         pass
@@ -90,11 +101,12 @@ class App:
                         res = copy_to_clipboard(export_string)
                         #res = ""
                         self.console.print(f'[bold green]{res}[/bold green]')
-                        # self.main_screen() # Switch to main screen
+                        self.main_window() # Switch to main screen
 
                     elif choice == options[1]:
                         # switch to edit screen
                         # self.edit_source_screen()
+                        raise NotImplementedError("Not implemented")
                         pass
                     else:
                         raise ValueError("Invalid command")
@@ -104,7 +116,7 @@ class App:
                     self.export_source_screen()
 
             elif choice == options[-1]:
-                # self.main_screen()
+                self.main_window()
                 pass
 
             else:
@@ -161,7 +173,7 @@ if __name__ == "__main__":
 
     # app.db_manager.add_source(source_data_objects[-1].to_dict())
     for source in source_data_objects:
-        app.db_manager.add_source(source)
+        #app.db_manager.add_source(source)
         pass
     app.run()
 
