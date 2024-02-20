@@ -19,14 +19,14 @@ class SourceItem(Base):
     
     id_: Mapped[int] = mapped_column(primary_key=True)
     category: Mapped[str] = mapped_column(String(30))
-    title: Mapped[str] = mapped_column(String(9999))
+    title: Mapped[str] = mapped_column(String(9999), nullable=True)
     # d_o_p: Mapped[str] = mapped_column(String(10)) #date of pulication
-    d_o_p: Mapped[date] = mapped_column(Date()) #date of pulication
-    authors: Mapped[str] = mapped_column(String(9999)) 
-    publisher: Mapped[str] = mapped_column(String(9999))
-    page_nums: Mapped[str] = mapped_column(String(9999))
-    edition: Mapped[str] = mapped_column(String(9999))
-    url: Mapped[str] = mapped_column(String(9999))
+    d_o_p: Mapped[date] = mapped_column(Date(), nullable=True) #date of pulication
+    authors: Mapped[str] = mapped_column(String(9999), nullable=True) 
+    publisher: Mapped[str] = mapped_column(String(9999), nullable=True)
+    page_nums: Mapped[str] = mapped_column(String(9999), nullable=True)
+    edition: Mapped[str] = mapped_column(String(9999), nullable=True)
+    url: Mapped[str] = mapped_column(String(9999), nullable=True)
     access_date: Mapped[date] = mapped_column(Date(),
                                               default=date.today())
     created_at: Mapped[datetime] = mapped_column(
@@ -44,10 +44,12 @@ class SourceItem(Base):
         for key, value in kwargs.items():
             if not hasattr(self, key):
                 raise AttributeError(f"Unkown: {key}: {value}")
-            setattr(self, key, value)
+            else:
+                setattr(self, key, value)
 
     def to_dict(self):
         source_data = { 
+                       "id": self.id_,
                        "category": self.category,
                        "title":  self.title,
                        "d_o_p":  self.d_o_p,
@@ -67,6 +69,11 @@ def authors_to_list(authors:str|None) -> List[str]:
     
 class SourceData:
     def __init__(self, **kwargs) -> None:
+        id = kwargs.get("id")
+        if id is not None:
+            self.id = id
+        else:
+            self.id = None
         self.category = kwargs.get("category")
         self.title = kwargs.get("title")
         self._d_o_p = kwargs.get("d_o_p")
@@ -116,6 +123,7 @@ class SourceData:
 
     def to_dict(self):
         source_data = { 
+                       "id_": self.id,
                        "category": self.category,
                        "title":  self.title,
                        "d_o_p":  self._d_o_p,
