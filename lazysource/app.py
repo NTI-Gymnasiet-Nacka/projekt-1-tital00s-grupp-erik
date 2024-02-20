@@ -10,6 +10,14 @@ from lazysource.models.source_item import SourceData
 from lazysource.utils.extract_as_harvard import build_export_string
 from lazysource.utils.utils import escape_html
 
+"""
+TODO: 
+1) Empty strings after actions
+2) Import screen
+3) Let user pick source to export
+4) Edit sources
+"""
+
 class App:
     def __init__(self):
         self.db_manager = DatabaseManager()
