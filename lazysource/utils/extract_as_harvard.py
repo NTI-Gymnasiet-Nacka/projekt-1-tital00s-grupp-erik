@@ -36,7 +36,7 @@ def author_format(names: list) -> str:
 def harvard_format_book(d: dict) -> str:
  
     if d.get("title") == None:
-        raise ValueError("Title is None")
+        raise ValueError("title is None")
     else:
         title = d.get("title")
     
@@ -46,17 +46,17 @@ def harvard_format_book(d: dict) -> str:
         d_o_p = d.get("d_o_p")
     
     if d.get("authors") == None:
-        raise ValueError("Author is None")
+        raise ValueError("author is None")
     else:
         authors = author_format(d.get("authors"))
     
     if d.get("publisher") == None:
-        raise ValueError("Publisher is None")
+        raise ValueError("publisher is None")
     else:
         publsiher = d.get("publisher")
         
     if d.get("edition") == None:
-        raise ValueError("Edition is None")
+        raise ValueError("edition is None")
     else:
         edition = d.get("edition")
        
@@ -71,7 +71,7 @@ def harvard_format_book(d: dict) -> str:
 
 def harvard_format_article(d:dict) -> str:
     if d.get("title") == None:
-        raise ValueError("Title is None")
+        raise ValueError("title is None")
     else:
         title = d.get("title")
     
@@ -81,12 +81,12 @@ def harvard_format_article(d:dict) -> str:
         d_o_p = d.get("d_o_p")
     
     if d.get("authors") == None:
-        raise ValueError("Author is None")
+        raise ValueError("author is None")
     else:
         authors = author_format(d.get("authors"))
     
     if d.get("publisher") == None:
-        raise ValueError("Publisher is None")
+        raise ValueError("publisher is None")
     else:
         publsiher = d.get("publisher")
     
@@ -96,7 +96,7 @@ def harvard_format_article(d:dict) -> str:
         url = d.get("url")
         
     if d.get("access_date") == None:
-        raise ValueError("Access_date is None")
+        raise ValueError("access_date is None")
     else:
         access_date = d.get("access_date")
     
@@ -104,6 +104,38 @@ def harvard_format_article(d:dict) -> str:
     d_m = d_o_p.split("-")[-1] + "-" + d_o_p.split("-")[1]
     
     return f"<p>{authors} ({y_o_p}). {title}. <i>{publsiher}</i>. {d_m}. {url} (Accessed {access_date}).</p>"
+
+def harvard_format_misc(d: dict) -> str:
+    if d.get("title") == None:
+        raise ValueError("title is None")
+    else: 
+        title = d.get("title")
+        
+    if d.get("d_o_p") == None:
+        raise ValueError("d_o_p is None")
+    else: 
+        d_o_p = d.get("d_o_p")
+    
+    if d.get("authors") == None:
+        raise ValueError("authors is None")
+    else:
+        authors = author_format(d.get("authors"))
+        
+    y_o_p = d_o_p.split("-")[0]
+    
+    if d.get("url") != None and d.get("access_date") != None:
+        url = d.get("url")
+        access_date = d.get("access_date")
+        return f"<p>{authors} ({y_o_p}). {title}. {url} (Accessed {access_date}).</p>"
+        
+    elif d.get("url") != None:
+        return f"<p>{authors} ({y_o_p}). {title}. {url}.</p>"
+
+    else:
+       return f"<p>{authors} ({y_o_p}). {title}</p>" 
+    
+    
+        
     
   
 def build_export_string(source_data:dict) -> str:
