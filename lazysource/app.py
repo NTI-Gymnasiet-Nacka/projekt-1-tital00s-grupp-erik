@@ -78,7 +78,7 @@ class App:
         
         while True:
             self.console.print("[yellow]Edit Source Screen")
-            self.console.print(self._ksf.format(_menu_str, **vars(_source)))
+            self.console.print(self._ksf.format(_menu_str, **_source.to_dict()))
         
             try:
                 _choice = prompt(">> ", completer=_main_menu_completer, validator=EditScnMenuValidator(_menu_ops))
@@ -91,6 +91,7 @@ class App:
                     _source.d_o_p = _entry
                 elif _choice == "Authors":
                     edit_authors = _source.authors
+                    self.console.print(edit_authors)
                     _aut_menu_ops = (
                         "Add",
                         "Remove",
@@ -100,14 +101,16 @@ class App:
                     aut_choice = prompt(">> ", completer=WordCompleter(_aut_menu_ops),
                                         validator=EditScnMenuValidator(_aut_menu_ops))
                     if aut_choice == "Add":
-                        _entry == prompt(">> ")
+                        self.console.print("Enter new author")
+                        _entry = prompt(">> ")
                         edit_authors.append(_entry)
                     elif aut_choice == "Remove":
-                        _entry == prompt(">> ", completer=WordCompleter(_source.authors),
+                        self.console.print("Enter author to remove")
+                        _entry = prompt(">> ", completer=WordCompleter(_source.authors),
                                         validator=EditScnMenuValidator(_source.authors))
                         edit_authors.remove(_entry)
                     elif aut_choice == "Back":
-                        pass
+                        continue
                     authors_str = ''.join([f"{author};" for author in edit_authors])
                     _source._authors = authors_str[:-1]
                 elif _choice == "Publisher":
@@ -142,7 +145,12 @@ class App:
         # loopa source for sources
         # row add source.id source.authors, source.title
         self.console.print(table)
-        self.main_window()
+        self.console.print("Enter id to edit a source\nType Back to exit this screen")
+        _choice = prompt(">> ", validator=EditScnMenuValidator(["Back", *[str(source.id) for source in sources]]))
+        if _choice == "Back":
+            self.main_window()
+        else:
+            self.edit_source_scn(SourceData(**self.db_manager.get_source(int(_choice)).to_dict()))
     
     def import_source_screen(self):
         pass
@@ -228,9 +236,9 @@ if __name__ == "__main__":
     source_data_examples = [
             {
                 "category": "book",
-                "title":  "500 skämt om papperssortering",
+                "title":  "500 skamt om papperssortering",
                 "d_o_p":  "2012-11-15",
-                "authors": "Vidar Silas Aörk;Eddie Ekbacke;William Carl Svensson",
+                "authors": "Vidar Silas Aork;Eddie Ekbacke;William Carl Svensson",
                 "publisher":  "Bonnier",
                 "page_nums":  "21-22",
                 "edition": "5",
@@ -239,9 +247,9 @@ if __name__ == "__main__":
                 },
             {
                 "category": "article",
-                "title":  "500 skämt om papperssortering",
+                "title":  "500 skamt om papperssortering",
                 "d_o_p":  "2012-11-15",
-                "authors": "Vidar Silas Börk;Eddie Ekbacke;William Carl Svensson",
+                "authors": "Vidar Silas Bork;Eddie Ekbacke;William Carl Svensson",
                 "publisher":  "Bonnier",
                 "page_nums":  "21-22",
                 "edition": "5",
@@ -250,9 +258,9 @@ if __name__ == "__main__":
                 },
             {
                 "category": "article",
-                "title":  "500 skämt om papperssortering",
+                "title":  "500 skamt om papperssortering",
                 "d_o_p":  "2012-11-15",
-                "authors": "Vidar Silas Cörk;Eddie Ekbacke;William Carl Svensson",
+                "authors": "Vidar Silas Cork;Eddie Ekbacke;William Carl Svensson",
                 "publisher":  "Bonnier",
                 "page_nums":  "21-22",
                 "edition": "5",
