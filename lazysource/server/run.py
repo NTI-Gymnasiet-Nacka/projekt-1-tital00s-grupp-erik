@@ -1,4 +1,4 @@
-from lazysource.database.dbmanager import DBManager
+from lazysource.database.db_manager import DBManager
 
 def run():
     db_engine = "sqlite"
