@@ -124,9 +124,9 @@ def build_export_string(source_data:dict) -> str:
 if __name__ == "__main__":
     source_data = { 
     "category": "article",
-    "title":  "500 skämt om papperssortering",
+    "title":  "500 skamt om papperssortering",
     "d_o_p":  "2012-11-15",
-    "authors": ["Vidar Silas Mörk", "Eddie Ekbacke", "William Carl Svensson"],
+    "authors": ["Vidar Silas Mork", "Eddie Ekbacke", "William Carl Svensson"],
     "publisher":  "Bonnier",
     "page_nums":  "21-22",
     "edition": "5",
